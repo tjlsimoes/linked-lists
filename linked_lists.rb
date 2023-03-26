@@ -42,15 +42,6 @@ class LinkedList
         end
     end
 
-    def recursive_noding(node, i = 1)
-                
-        if node.next_node 
-            i += 1
-            return recursive_noding(node.next_node, i) if node.next_node != nil
-        end
-        i
-    end
-
     def size
         if @head == nil
             0
@@ -156,46 +147,56 @@ class LinkedList
     end
 
 
+    def insert_at(value, index)
+
+        if index == 0
+            self.prepend(value)
+        elsif index == self.size - 1
+            self.append(value)
+        else 
+            # insert new node at index
+            # pre-index node points to other node
+            # need for inserted node to noted pointed to by pre-index node
+            # need for pre-index node then to point to inserted node
+
+            new_node = Node.new(value)
+            pre_index = self.at(index - 1)
+            new_node.next_node = pre_index.next_node
+            pre_index.next_node = new_node
+        end
+
+    end
+
+
+    def remove_at(index)
+
+        if  index == 0
+            
+            @head = @head.next_node
+
+        elsif index == self.size - 1
+
+            self.pop
+        else 
+            # remove node at index
+            # pre-index node needs to point to node to be removed's next node
+
+            pre_index = self.at(index - 1)
+            pre_index.next_node = self.at(index).next_node
+
+            # Will the memory of the "removed" node be freed this way?
+        end
+
+    end
+
+
 end
 
 linked_list = LinkedList.new
-p linked_list
+
 linked_list.prepend("hello")
-p linked_list
 linked_list.prepend("Hallo")
-p linked_list
-
-
 linked_list.append("Zdravo")
-p linked_list
-
-
-p "Head and tail following."
-
-p linked_list.head
-p linked_list.tail
-
-
-p "Size following."
-
-p linked_list.size
-
-
-p "At index"
-
-p linked_list.at(2)
-
-p linked_list.pop
-
-
-p "Contains?"
-
-p linked_list.contains?("hello")
-
-p "Find."
-
-p linked_list.find("hello")
-
 
 p linked_list.to_s
 
